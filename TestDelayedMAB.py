@@ -90,7 +90,15 @@ def TS():
 
 def testFramework(T, exec_time):
     global time, TotalWorker, ExecTime
-    #np.random.seed() 
+    global NPrices, AvgAward, DataList, NWorker, Utility
+    #np.random.seed()
+    NPrices = np.zeros(AvaPrices.size)
+    AvgAward = np.zeros(AvaPrices.size)
+    DataList = []
+    NWorker = 0
+    time = 1
+    Utility = 0
+    TotalWorker = 0
     ExecTime = exec_time
     while time <= T:
         # print(time)
@@ -136,7 +144,7 @@ def MultiThreadTest(T, exec_time):
 import sys
 if __name__ == "__main__":
     exec_delay = int(sys.argv[1])
-    resultlist = MultiThreadTest(5000, 0)
+    resultlist = MultiThreadTest(5000, exec_delay)
     ratio = 0
     for res in resultlist:
         ratio += res[0]/res[1]
