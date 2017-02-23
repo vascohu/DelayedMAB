@@ -90,6 +90,7 @@ def TS():
 
 def testFramework(T, exec_time):
     global time, TotalWorker, ExecTime
+    #np.random.seed() 
     ExecTime = exec_time
     while time <= T:
         # print(time)
@@ -97,8 +98,8 @@ def testFramework(T, exec_time):
         n = come_worker_num()
         TotalWorker += n
         for i in range(n):
-            # price = ucb()
-            price = TS()
+            price = ucb()
+            # price = TS()
             worker_data = worker(time, price)
             add_data(worker_data)
         time += 1
@@ -109,7 +110,7 @@ def testFramework(T, exec_time):
 
 def MultiTest(T, exec_time, util_q):
     res = []
-    for i in range(1):
+    for i in range(10):
         res.append(testFramework(T, exec_time))
     util_q.put(res)
 
@@ -117,7 +118,7 @@ def MultiTest(T, exec_time, util_q):
 def MultiThreadTest(T, exec_time):
     procs = []
     util_q = mtp.Queue()
-    ThreadNum = 2
+    ThreadNum = 1
     for i in range(ThreadNum):
         p = mtp.Process(target=MultiTest, args=(T,exec_time,util_q))
         procs.append(p)
@@ -132,12 +133,14 @@ def MultiThreadTest(T, exec_time):
 
     return resultlist
 
+import sys
 if __name__ == "__main__":
+    exec_delay = int(sys.argv[1])
     resultlist = MultiThreadTest(5000, 0)
     ratio = 0
     for res in resultlist:
         ratio += res[0]/res[1]
-
+    print(">>>>>>>>>>>>>> ", exec_delay)
     print(">>>>>>>>>>>>>> ", ratio/len(resultlist))
 
 
