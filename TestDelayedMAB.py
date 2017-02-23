@@ -100,6 +100,7 @@ def testFramework(T, exec_time):
     Utility = 0
     TotalWorker = 0
     ExecTime = exec_time
+    np.random.seed()
     while time <= T:
         # print(time)
         data_update(time)
