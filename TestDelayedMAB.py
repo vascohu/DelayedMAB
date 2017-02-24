@@ -127,7 +127,7 @@ def MultiTest(T, exec_time, util_q):
 def MultiThreadTest(T, exec_time):
     procs = []
     util_q = mtp.Queue()
-    ThreadNum = 20
+    ThreadNum = 2
     for i in range(ThreadNum):
         p = mtp.Process(target=MultiTest, args=(T,exec_time,util_q))
         procs.append(p)
@@ -142,14 +142,21 @@ def MultiThreadTest(T, exec_time):
 
     return resultlist
 
-import sys
-if __name__ == "__main__":
-    exec_delay = int(sys.argv[1])
-    resultlist = MultiThreadTest(5000, exec_delay)
+
+def mean_ratio(result_list):
     ratio = 0
-    for res in resultlist:
+    for res in result_list:
         ratio += res[0]/res[1]
-    print(">>>>>>>>>>>>>> ", exec_delay)
-    print(">>>>>>>>>>>>>> ", ratio/len(resultlist))
+    return ratio/len(result_list)
 
-
+import sys
+import pickle
+if __name__ == "__main__":
+    #exec_delay = 10#int(sys.argv[1])
+    data = []
+    for exec_delay in np.arange(0,550,50):
+        result_list = MultiThreadTest(5000, exec_delay)
+        ratio = mean_ratio(result_list)
+        data.append((exec_delay, ratio))
+    with open('result.data', 'wb') as fp:
+        pickle.dump(data, fp)
