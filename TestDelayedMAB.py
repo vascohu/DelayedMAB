@@ -107,8 +107,8 @@ def testFramework(T, exec_time):
         n = come_worker_num()
         TotalWorker += n
         for i in range(n):
-            price = ucb()
-            # price = TS()
+            #price = ucb()
+            price = TS()
             worker_data = worker(time, price)
             add_data(worker_data)
         time += 1
@@ -127,7 +127,7 @@ def MultiTest(T, exec_time, util_q):
 def MultiThreadTest(T, exec_time):
     procs = []
     util_q = mtp.Queue()
-    ThreadNum = 1
+    ThreadNum = 20
     for i in range(ThreadNum):
         p = mtp.Process(target=MultiTest, args=(T,exec_time,util_q))
         procs.append(p)
